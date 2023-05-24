@@ -76,7 +76,9 @@ module Src
         validate_chapters_data_matches_chapter_directories(chapters_config, chapter_directories, course_base_directory_name)
 
         ##################### pages_config_validation ######################
-        chapter_directories.each do |chapter_directory|
+        chapter_directories.each_with_index do |chapter_directory,chapter_index|
+          is_chapter_having_pages = chapters_config[chapter_index]["has_pages"]
+          next if !is_chapter_having_pages.nil? && !is_chapter_having_pages
           pages_config = load_pages_config(chapter_directory, course_base_directory_name)
           page_files = Dir[File.join(chapter_directory, "pages", "*.md")].select { |f| File.file? f }
           chapter_base_directory_name = File.basename(chapter_directory)
